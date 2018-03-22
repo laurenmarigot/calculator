@@ -1,0 +1,106 @@
+body {
+	text-align: center; 
+  height: 2000px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+h1 {
+  font-family: 'Helvetica', serif;
+  font-size: 40px;
+  float: center;
+}
+
+h2 {
+  font-family: 'Helvetica', serif;
+  font-size: 30px;
+  float: center;
+}
+
+
+p {
+  font-size: 50px;
+  font-style: italic;
+  color: #EF461F;
+  font-weight: bold;
+}
+
+.big_photo {
+  /*background-color: #FCEE21;*/
+  float: center;
+  width: 75%;
+  /*height: 100px;*/
+  border-radius: 6px;
+  margin: 0 auto;
+}
+
+.ad-left {
+  float: left;
+  margin-left:12.5%;
+}
+
+.ad-right {
+  float: right;
+  margin-right: 12.5%;
+}
+
+
+.big_div {
+  float: center;
+  border-radius:6px;
+  margin-top:10px;
+  /*margin:0%;*/
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+#census {
+  background-color: #9f1c68;
+  float:left;
+  /*width:15%;*/
+  padding:10%;
+  margin:1%;
+  margin-left:9%;
+  color: white;
+  font-family: 'Helvetica', serif;
+
+}
+
+#flowers {
+  background-color: #0891d9;
+  float:left;
+  /*width: 15%;*/
+  padding:10%;
+  margin:1%;
+  color: white;
+  font-family: 'Helvetica', serif;
+
+
+}
+
+#boats {
+  background-color: #332e81;
+  float:left;
+  margin:1%;
+  /*width:15%;*/
+  margin-right:9%;
+  padding:10%;
+  color: white;
+  font-family: 'Helvetica', serif;
+
+} 
+
+.i_frame_visible{
+  position: relative;
+  z-index: 10
+  /*visibility: hidden;*/
+}
