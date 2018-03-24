@@ -6,18 +6,21 @@
 
 # packages
   #install.packages("shiny")
+  #install.packages("sjPlot")
+  #install.packages("sjmisc")
+  #install.packages("sjlabelled")
   library(shiny)
+  library(sjPlot)
+  library(sjmisc)
+  library(sjlabelled)
+  
 
 # Define UI 
   ui <- fluidPage(
-    
-    # App title ----
     #titlePanel("Miles Per Gallon"),
-    
-    # Sidebar layout with input and output definitions ----
+
     sidebarLayout(
-      
-      # Sidebar panel for inputs ----
+      #Inputs
       sidebarPanel(
                 selectInput("depvar", "Dependent Variable:",
                     c("Sepal Length" = "Sepal.Length",
@@ -25,7 +28,7 @@
                       "Petal Length" = "Petal.Length",
                       "Petal Width" = "Petal.Width")),
                
-                checkboxGroupInput("indVar", 
+                checkboxGroupInput("indvar", 
                            p("Independent Variables:"), 
                            choices = list("Species" = "Species",
                                           "Sepal Length" = "Sepal.Length",
@@ -34,48 +37,64 @@
                                           "Petal Width" = "Petal.Width"),
                            selected = "Species")
         ),
-    
       
-      # Main panel for displaying outputs ----
+      #Outputs
       mainPanel(
           h3(textOutput("caption")),
-        
-        # Output: Plot of the requested variable against mpg ----
-        plotOutput("mpgPlot")
-        
+          verbatimTextOutput("model"),
+          plotOutput("chart")
       )
     )
   )
-# Define server logic
-  # Data pre-processing
-    iris <- iris
-    #iris$am <- factor(mpgData$am, labels = c("Automatic", "Manual"))
+  
+# SERVER
+  iris <- iris
 
-# Define server logic to plot various variables against mpg ----
   server <- function(input, output) {
   
-    # Compute the formula text ----
-    # This is in a reactive expression since it is shared by the
-    # output$caption and output$mpgPlot functions
+    # Formula Text
     formulaText <- reactive({
-      paste(input$depvar, "=", input$indVar[1], "+", input$indVar[2])
+      if(is.na(input$indvar[2])==TRUE) {
+        paste(input$depvar, "=", input$indvar[1])
+      }else if(is.na(input$indvar[3])==TRUE) {
+        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2])
+      }else if(is.na(input$indvar[4])==TRUE){
+        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3])
+      }else if(is.na(input$indvar[5])==TRUE){
+        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3],"+", input$indvar[4])
+      } else {
+        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3],"+", input$indvar[4],"+", input$indvar[5])
+      }  
     })
     
-    # Return the formula text for printing as a caption ----
     output$caption <- renderText({
       formulaText()
     })
     
-    # Generate a plot of the requested variable against mpg ----
-    # and only exclude outliers if requested
-    #output$mpgPlot <- renderPlot({
+    #output$chart <- renderPlot({
     #  boxplot(as.formula(formulaText()),
-    #          data = mpgData,
+    #          data = iris,
     #          outline = input$outliers,
     #          col = "#75AADB", pch = 19)
     #})
-    output$model<-renderText({ 
-      #as.data.frame(coefficients(lm(Petal.Length~Petal.Width, data=iris))) #input$depVar
+
+    formulaModel <- reactive({  
+      if(is.na(input$indvar[2])==TRUE) {
+        summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]]))
+      } else if (is.na(input$indvar[3])==TRUE) {
+        summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]] + iris[,input$indvar[2]]))
+      } else if (is.na(input$indvar[4])==TRUE) {
+        summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]] + iris[,input$indvar[2]] + iris[,input$indvar[3]]))
+      } else if (is.na(input$indvar[5])==TRUE) {
+        summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]] + iris[,input$indvar[2]] + iris[,input$indvar[3]] + iris[,input$indvar[4]]))
+      } else {
+        summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]] + iris[,input$indvar[2]] + iris[,input$indvar[3]] + iris[,input$indvar[4]] + iris[,input$indvar[5]]))
+      }
+    
+    }) 
+    
+    output$model<-renderPrint({ 
+      formulaModel()
     })  
 
   }
@@ -90,10 +109,13 @@
   
   
   
+#fit1<-lm(Petal.Length~Petal.Width, data=iris) 
+#pretty<-sjt.lm(fit1,string.est = "Estimate",
+#               string.ci = "Conf. Int.",
+#               string.p = "p-value")  
   
   
   
-  
-  
+  #fit <- lm(swiss[,input$depvar] ~ swiss[,input$indepvar])
   
   

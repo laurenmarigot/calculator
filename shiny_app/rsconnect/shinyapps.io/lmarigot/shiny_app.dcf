@@ -5,6 +5,9 @@ account: lmarigot
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 303042
-bundleId: 1277603
+bundleId: 1286148
 url: https://lmarigot.shinyapps.io/shiny_app/
-when: 1521507608.1549
+when: 1521913626.82308
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app2.R

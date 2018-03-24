@@ -57,6 +57,8 @@ p {
 
 .hidden {
   visibility: hidden;
+  width:0px;
+  height:0px;
 }
 
 .visible {
@@ -99,8 +101,12 @@ p {
 
 } 
 
-.i_frame_visible{
-  position: relative;
-  z-index: 10
+.iframe_visible{
+  /*position: relative;*/
+  float: center;
+  /*z-index: 10*/
+  width: 80%;
+  height:575px;
+  border:none;
   /*visibility: hidden;*/
 }
