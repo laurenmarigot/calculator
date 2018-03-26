@@ -1,0 +1,13 @@
+name: hawaiiElection2010
+title: hawaiiElection2010
+username:
+account: lmarigot
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 307739
+bundleId: 1287616
+url: https://lmarigot.shinyapps.io/hawaiiElection2010/
+when: 1522026514.666
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app.R

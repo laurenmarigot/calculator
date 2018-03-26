@@ -3,6 +3,8 @@
   # https://shiny.rstudio.com/articles/dynamic-ui.html 
   # https://shiny.rstudio.com/articles/upload.html
   # https://shiny.rstudio.com/tutorial/written-tutorial/lesson3/ 
+  # https://stackoverflow.com/questions/40991183/crosstab-output-getting-displayed-in-viewer-pane-only-and-not-in-shiny-app
+
 
 # packages
   #install.packages("shiny")
@@ -13,28 +15,29 @@
   library(sjPlot)
   library(sjmisc)
   library(sjlabelled)
+  library(dplyr)
   
 
 # Define UI 
   ui <- fluidPage(
-    #titlePanel("Miles Per Gallon"),
+    titlePanel("Flower Fun"),
 
     sidebarLayout(
       #Inputs
       sidebarPanel(
                 selectInput("depvar", "Dependent Variable:",
-                    c("Sepal Length" = "Sepal.Length",
-                      "Sepal Width" = "Sepal.Width",
-                      "Petal Length" = "Petal.Length",
-                      "Petal Width" = "Petal.Width")),
+                    c("Sepal Length" = "Sepal Length",
+                      "Sepal Width" = "Sepal Width",
+                      "Petal Length" = "Petal Length",
+                      "Petal Width" = "Petal Width")),
                
                 checkboxGroupInput("indvar", 
                            p("Independent Variables:"), 
                            choices = list("Species" = "Species",
-                                          "Sepal Length" = "Sepal.Length",
-                                          "Sepal Width" = "Sepal.Width",
-                                          "Petal Length" = "Petal.Length",
-                                          "Petal Width" = "Petal.Width"),
+                                          "Sepal Length" = "Sepal Length",
+                                          "Sepal Width" = "Sepal Width",
+                                          "Petal Length" = "Petal Length",
+                                          "Petal Width" = "Petal Width"),
                            selected = "Species")
         ),
       
@@ -49,37 +52,47 @@
   
 # SERVER
   iris <- iris
+  iris <- rename(iris, "Sepal Length"="Sepal.Length","Sepal Width"="Sepal.Width","Petal Length"="Petal.Length","Petal Width"="Petal.Width")
 
   server <- function(input, output) {
   
-    # Formula Text
-    formulaText <- reactive({
-      if(is.na(input$indvar[2])==TRUE) {
-        paste(input$depvar, "=", input$indvar[1])
-      }else if(is.na(input$indvar[3])==TRUE) {
-        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2])
-      }else if(is.na(input$indvar[4])==TRUE){
-        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3])
-      }else if(is.na(input$indvar[5])==TRUE){
-        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3],"+", input$indvar[4])
-      } else {
-        paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3],"+", input$indvar[4],"+", input$indvar[5])
-      }  
-    })
+    # Formula
+      formulaText <- reactive({
+        if(is.null(input$indvar)==TRUE) {
+          paste("")
+        }else if(is.na(input$indvar[2])==TRUE) {
+          paste(input$depvar, "=", input$indvar[1])
+        }else if(is.na(input$indvar[3])==TRUE) {
+          paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2])
+        }else if(is.na(input$indvar[4])==TRUE){
+          paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3])
+        }else if(is.na(input$indvar[5])==TRUE){
+          paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3],"+", input$indvar[4])
+        } else {
+          paste(input$depvar, "=", input$indvar[1],"+", input$indvar[2],"+", input$indvar[3],"+", input$indvar[4],"+", input$indvar[5])
+        }  
+      })
+      
+      output$caption <- renderText({
+        formulaText()
+      })
     
-    output$caption <- renderText({
-      formulaText()
-    })
+    # Chart 
+      chartTitle<- renderText({
+          reactive({input$depvar})
+      })
+      output$chart <- renderPlot({
+        hist(iris[,input$depvar], 
+             main=paste("Distribution of",input$depvar), 
+             xlab=input$depvar,
+             col = "#0891d9")
+      })
     
-    #output$chart <- renderPlot({
-    #  boxplot(as.formula(formulaText()),
-    #          data = iris,
-    #          outline = input$outliers,
-    #          col = "#75AADB", pch = 19)
-    #})
 
     formulaModel <- reactive({  
-      if(is.na(input$indvar[2])==TRUE) {
+      if (is.null(input$indvar)) {
+        paste("Please select an independent variable.")
+      } else if (is.na(input$indvar[2])==TRUE) {
         summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]]))
       } else if (is.na(input$indvar[3])==TRUE) {
         summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]] + iris[,input$indvar[2]]))
@@ -90,7 +103,6 @@
       } else {
         summary(lm(iris[,input$depvar] ~ iris[,input$indvar[1]] + iris[,input$indvar[2]] + iris[,input$indvar[3]] + iris[,input$indvar[4]] + iris[,input$indvar[5]]))
       }
-    
     }) 
     
     output$model<-renderPrint({ 
@@ -118,4 +130,9 @@
   
   #fit <- lm(swiss[,input$depvar] ~ swiss[,input$indepvar])
   
-  
+  #output$chart <- renderPlot({
+  #  boxplot(as.formula(formulaText()),
+  #          data = iris,
+  #          outline = input$outliers,
+  #          col = "#75AADB", pch = 19)
+  #}) 

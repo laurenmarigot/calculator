@@ -7,8 +7,8 @@ function reset(){
 	if(visible=1) {
 		$('#census_iframe').removeClass('iframe_visible');
 		$('#census_iframe').addClass('hidden');
-		$('#boats_iframe').removeClass('iframe_visible');
-		$('#boats_iframe').addClass('hidden');
+		$('#elections_iframe').removeClass('iframe_visible');
+		$('#elections_iframe').addClass('hidden');
 		$('#flowers_iframe').removeClass('iframe_visible');
 		$('#flowers_iframe').addClass('hidden');
 		visible=0;
@@ -34,12 +34,12 @@ $('#flowers').on('click',function(e){
 	visible=1;
 });
 
-$('#boats').on('click',function(e){
+$('#elections').on('click',function(e){
 	e.preventDefault();
 	reset();
 	showChooseVars();
-	$('#boats_iframe').removeClass('hidden');
-	$('#boats_iframe').addClass('iframe_visible');
+	$('#elections_iframe').removeClass('hidden');
+	$('#elections_iframe').addClass('iframe_visible');
 	visible=1;
 });
 

@@ -1,13 +1,12 @@
 name: shiny_app
-title:
+title: shiny_app
 username:
 account: lmarigot
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 303042
-bundleId: 1286148
+bundleId: 1287458
 url: https://lmarigot.shinyapps.io/shiny_app/
-when: 1521913626.82308
+when: 1522018108.29699
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: app2.R
