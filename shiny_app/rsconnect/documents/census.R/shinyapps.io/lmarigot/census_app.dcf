@@ -1,0 +1,13 @@
+name: census_app
+title: census_app
+username:
+account: lmarigot
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 309233
+bundleId: 1289707
+url: https://lmarigot.shinyapps.io/census_app/
+when: 1522127305.72948
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app.R|Elections.R|data/General_Election_2010_Summary_Results.csv|data/General_Election_2010_Summary_Results.rds|rsconnect_elections/.DS_Store|rsconnect_elections/documents/.DS_Store|rsconnect_elections/documents/Elections.R/.DS_Store|rsconnect_elections/documents/Elections.R/shinyapps.io/.DS_Store|rsconnect_elections/documents/Elections.R/shinyapps.io/lmarigot/hawaiiElection2010.dcf
